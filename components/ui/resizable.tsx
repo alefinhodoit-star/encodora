@@ -1,0 +1,48 @@
+"use client"
+
+import * as React from 'react'
+import * as ResizablePrimitive from '@radix-ui/react-resizable'
+import { cn } from '@/lib/utils'
+
+const ResizablePanelGroup = React.forwardRef<
+  React.ElementRef<typeof ResizablePrimitive.PanelGroup>,
+  React.ComponentPropsWithoutRef<typeof ResizablePrimitive.PanelGroup>
+>(({ className, ...props }, ref) => (
+  <ResizablePrimitive.PanelGroup
+    ref={ref}
+    className={cn('flex w-full', className)}
+    {...props}
+  />
+))
+ResizablePanelGroup.displayName = ResizablePrimitive.PanelGroup.displayName
+
+const ResizablePanel = React.forwardRef<
+  React.ElementRef<typeof ResizablePrimitive.Panel>,
+  React.ComponentPropsWithoutRef<typeof ResizablePrimitive.Panel>
+>(({ className, ...props }, ref) => (
+  <ResizablePrimitive.Panel
+    ref={ref}
+    className={cn('flex flex-1 overflow-auto data-[panel-group-direction=vertical]:flex-col', className)}
+    {...props}
+  />
+))
+ResizablePanel.displayName = ResizablePrimitive.Panel.displayName
+
+const ResizableHandle = React.forwardRef<
+  React.ElementRef<typeof ResizablePrimitive.PanelResizeHandle>,
+  React.ComponentPropsWithoutRef<typeof ResizablePrimitive.PanelResizeHandle>
+>(({ className, ...props }, ref) => (
+  <ResizablePrimitive.PanelResizeHandle
+    ref={ref}
+    className={cn(
+      'relative flex w-px items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-px after:-translate-x-1/2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-px data-[panel-group-direction=vertical]:after:top-1/2 data-[panel-group-direction=vertical]:after:-translate-y-1/2 data-[panel-group-direction=vertical]:after:translate-x-0 [&>[div]:rotate-90',
+      className
+    )}
+    {...props}
+  >
+    <ResizablePrimitive.PanelResizeHandleDragButton className="relative z-10 flex h-4 w-4 items-center justify-center rounded-sm border border-transparent" />
+  </ResizablePrimitive.PanelResizeHandle>
+))
+ResizableHandle.displayName = ResizablePrimitive.PanelResizeHandle.displayName
+
+export { ResizablePanelGroup, ResizablePanel, ResizableHandle }

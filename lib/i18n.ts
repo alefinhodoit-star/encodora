@@ -1,0 +1,50 @@
+export const DEFAULT_LOCALE = 'pt-BR'
+
+export const LOCALES = [
+  { code: 'pt-BR', name: 'Português', flag: '🇧🇷', currency: 'EUR', symbol: '€' },
+  { code: 'pt-PT', name: 'Português (PT)', flag: '🇵🇹', currency: 'EUR', symbol: '€' },
+  { code: 'en-GB', name: 'English', flag: '🇬🇧', currency: 'GBP', symbol: '£' },
+  { code: 'es-ES', name: 'Español', flag: '🇪🇸', currency: 'EUR', symbol: '€' },
+  { code: 'fr-FR', name: 'Français', flag: '🇫🇷', currency: 'EUR', symbol: '€' },
+]
+
+export const DICTS: Record<string, Record<string, unknown>> = {
+  'pt-BR': {
+    'hero.title': 'Engenharia de Software de Precisão',
+    'hero.sub': 'Arquitetura backend, frontend, mobile, cloud/DevOps e IA — sistemas de precisão à escala global.',
+    'services.title': 'Nossos Serviços',
+    'services.sub': 'Entregamos soluções técnicas de alto padrão para negócios que exigem excelência.',
+    'portfolio.title': 'Portfolio',
+    'portfolio.sub': 'Projetos desenvolvidos com foco em performance, escalabilidade e experiência do usuário.',
+    'contact.title': 'Entre em Contato',
+    'contact.sub': 'Tem um projeto em mente? Fale com nosso time.',
+    'nav.home': 'Início',
+    'nav.services': 'Serviços',
+    'nav.portfolio': 'Portfolio',
+    'nav.about': 'Sobre',
+    'nav.contact': 'Contato',
+    'nav.login': 'Entrar',
+    'nav.register': 'Cavar',
+    'footer.description': 'Encodora é uma agência de engenharia de software especializada em backend, frontend, mobile, cloud/DevOps e inteligência artificial.',
+    'footer.contact': 'Contacto: contacto@encodora.pt',
+  },
+  'en-GB': {
+    'hero.title': 'Precision Software Engineering',
+    'hero.sub': 'Backend, frontend, mobile, cloud/DevOps and AI architecture — precision systems at global scale.',
+    'services.title': 'Our Services',
+    'services.sub': 'We deliver high-standard technical solutions for businesses that demand excellence.',
+    'portfolio.title': 'Portfolio',
+    'portfolio.sub': 'Projects developed with focus on performance, scalability, and user experience.',
+    'contact.title': 'Get in Touch',
+    'contact.sub': 'Have a project in mind? Talk to our team.',
+    'nav.home': 'Home',
+    'nav.services': 'Services',
+    'nav.portfolio': 'Portfolio',
+    'nav.about': 'About',
+    'nav.contact': 'Contact',
+    'nav.login': 'Login',
+    'nav.register': 'Register',
+    'footer.description': 'Encodora is a software engineering agency specialized in backend, frontend, mobile, cloud/DevOps and artificial intelligence.',
+    'footer.contact': 'Contact: contacto@encodora.pt',
+  },
+}
