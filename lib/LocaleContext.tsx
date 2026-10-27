@@ -81,29 +81,29 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   }, [locale])
 
   const lookup = useCallback(
-    (key: string) => {
-      const walk = (dict: Record<string, unknown>) =>
-        key.split('.').reduce((acc, part) => (acc == null ? undefined : (acc as Record<string, unknown>)[part]), dict)
-      const val = walk(DICTS[locale])
-      if (val !== undefined) return val
-      return walk(DICTS[DEFAULT_LOCALE])
-    },
-    [locale]
-  )
-
-  const t = useCallback(
-    (key: string, vars?: Record<string, string | number>) => {
-      let val = lookup(key)
-      if (typeof val !== 'string') return key
-      if (vars) {
-        for (const k of Object.keys(vars)) {
-          val = val.split(`{${k}}`).join(String(vars[k]))
+      (key: string) => {
+        const walk = (dict: Record<string, unknown>) =>
+          key.split('.').reduce<unknown>((acc, part) => (acc == null ? undefined : (acc as Record<string, unknown>)[part]), dict)
+        const val = walk(DICTS[locale])
+        if (val !== undefined) return val
+        return walk(DICTS[DEFAULT_LOCALE])
+      },
+      [locale]
+    )
+  
+    const t = useCallback(
+      (key: string, vars?: Record<string, string | number>) => {
+        const val = lookup(key)
+        if (typeof val !== 'string') return key
+        if (vars) {
+          for (const k of Object.keys(vars)) {
+            val.split(`{${k}}`).join(String(vars[k]))
+          }
         }
-      }
-      return val
-    },
-    [lookup]
-  )
+        return val
+      },
+      [lookup]
+    )
 
   const tr = useCallback((key: string) => lookup(key), [lookup])
 
