@@ -3,6 +3,8 @@
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { useAuth } from '@/lib/AuthContext'
 
+export const dynamic = 'force-dynamic'
+
 export default function AdminPage() {
   const { isAuthenticated } = useAuth()
 

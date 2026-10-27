@@ -35,18 +35,22 @@ export async function POST(request: Request) {
       )
     }
 
+    // Mark token as used to prevent reuse
+    markTokenUsed(token)
+
     // In a production app, update the user's password in the database
     // For now, we just mark the token as used
-    markTokenUsed(token)
 
     return NextResponse.json({
       success: true,
       message: 'Password has been reset successfully.',
     })
-  } catch {
+  } catch (error) {
+    // Log error for security monitoring
+    console.error('Reset password error:', error)
     return NextResponse.json(
-      { error: 'Invalid request' },
-      { status: 400 }
+      { error: 'Internal server error' },
+      { status: 500 }
     )
   }
 }

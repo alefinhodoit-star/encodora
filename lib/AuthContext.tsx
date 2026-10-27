@@ -75,6 +75,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const getCsrfToken = (): string => {
+    if (typeof document === 'undefined') return ''
+    const match = document.cookie.match(/(?:^|; )csrf_token=([^;]*)/)
+    return match ? decodeURIComponent(match[1]) : ''
+  }
+
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoadingAuth(true)
     try {
@@ -123,7 +129,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async (shouldRedirect = true) => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' })
+      const csrfToken = getCsrfToken()
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      })
     } catch (error) {
       console.error('Logout failed', error)
     }

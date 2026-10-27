@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers'
-
 interface AuthSession {
   userId: string
   email: string
@@ -57,23 +55,6 @@ export function cleanupExpiredSessions(): void {
       delete sessions[token]
     }
   })
-}
-
-// Start periodic cleanup every hour
-let cleanupInterval: NodeJS.Timeout | null = null
-
-export function startSessionCleanup(): void {
-  if (cleanupInterval) return
-  cleanupInterval = setInterval(() => {
-    cleanupExpiredSessions()
-  }, 60 * 60 * 1000) // 1 hour
-}
-
-export function stopSessionCleanup(): void {
-  if (cleanupInterval) {
-    clearInterval(cleanupInterval)
-    cleanupInterval = null
-  }
 }
 
 // CSRF token management for state-changing operations
