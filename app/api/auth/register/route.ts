@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { createSession } from '@/lib/auth-store'
 
 export async function POST(request: Request) {
   try {
@@ -28,9 +29,10 @@ export async function POST(request: Request) {
     }
 
     // In a production app, create user in database
-    const token = `auth-${Date.now()}-${Math.random().toString(36).slice(2)}`
+    const userId = '1'
+    const token = createSession(userId, email, name)
 
-    const response = NextResponse.json({ success: true, user: { id: '1', name, email } })
+    const response = NextResponse.json({ success: true, user: { id: userId, name, email } })
 
     response.cookies.set('auth_token', token, {
       httpOnly: true,

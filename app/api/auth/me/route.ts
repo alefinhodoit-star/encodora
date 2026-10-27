@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { validateSession } from '@/lib/auth-store'
 
 export async function GET() {
   const cookieStore = cookies()
@@ -9,9 +10,13 @@ export async function GET() {
     return NextResponse.json({ authenticated: false }, { status: 401 })
   }
 
-  // In a production app, validate token against database/session store
+  const session = validateSession(token)
+  if (!session) {
+    return NextResponse.json({ authenticated: false }, { status: 401 })
+  }
+
   return NextResponse.json({
     authenticated: true,
-    user: { id: '1', name: 'User', email: 'user@example.com' },
+    user: { id: session.userId, name: session.name, email: session.email },
   })
 }

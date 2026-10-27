@@ -16,8 +16,17 @@ export default function ForgotPasswordPage() {
     e.preventDefault()
     setIsLoading(true)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      setSent(true)
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+
+      if (response.ok) {
+        setSent(true)
+      } else {
+        console.error('Password reset failed')
+      }
     } catch (error) {
       console.error('Password reset failed', error)
     } finally {
@@ -46,7 +55,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-md w-full space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white">Redefinir senha</h1>
           <p className="text-gray-400 mt-2">Insira seu email para receber instruções</p>

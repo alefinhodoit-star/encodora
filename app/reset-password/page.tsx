@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -14,10 +14,25 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  // Get token from URL query parameter
+  const token = searchParams.get('token') || ''
+
+  useEffect(() => {
+    if (!token) {
+      setError('Missing reset token. Please request a new password reset.')
+    }
+  }, [token])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (!token) {
+      setError('Missing reset token. Please request a new password reset.')
+      return
+    }
 
     if (password !== confirmPassword) {
       setError('As senhas não coincidem')
@@ -31,11 +46,20 @@ export default function ResetPasswordPage() {
 
     setIsLoading(true)
     try {
-      // In a real app, this would call a password reset API with a token from URL
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      router.push('/login?reset=success')
-    } catch (error) {
-      console.error('Password reset failed', error)
+      const response = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password, confirmPassword }),
+      })
+
+      if (response.ok) {
+        router.push('/login?reset=success')
+      } else {
+        const data = await response.json()
+        setError(data.error || 'Erro ao redefinir senha. Tente novamente.')
+      }
+    } catch (err) {
+      console.error('Password reset failed', err)
       setError('Erro ao redefinir senha. Tente novamente.')
     } finally {
       setIsLoading(false)
@@ -44,7 +68,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-md w-full space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white">Redefinir senha</h1>
           <p className="text-gray-400 mt-2">Crie uma nova senha</p>

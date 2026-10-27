@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 
 interface User {
   id: string
@@ -123,7 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async (shouldRedirect = true) => {
     try {
-      await fetch('/api/auth/logout')
+      await fetch('/api/auth/logout', { method: 'POST' })
     } catch (error) {
       console.error('Logout failed', error)
     }
@@ -137,6 +137,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const navigateToLogin = () => {
     window.location.href = '/login'
   }
+
+  // Initialize auth check on mount
+  useEffect(() => {
+    checkUserAuth()
+  }, [])
 
   return (
     <AuthContext.Provider

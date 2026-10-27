@@ -1,5 +1,5 @@
 export const appParams = {
-  appId: process.env.NEXT_PUBLIC_APP_ID || '',
-  functionsVersion: process.env.NEXT_PUBLIC_FUNCTIONS_VERSION || '',
-  appBaseUrl: process.env.NEXT_PUBLIC_APP_BASE_URL || '',
+  appId: process.env.APP_ID || '',
+  functionsVersion: process.env.FUNCTIONS_VERSION || '',
+  appBaseUrl: process.env.APP_BASE_URL || 'https://encodora.pt',
 }

@@ -2,7 +2,7 @@ import { type Metadata } from 'next'
 
 export const SITE_NAME = 'Encodora'
 export const SITE_DESCRIPTION = 'Agência de engenharia de software especializada em backend, frontend, mobile, cloud/DevOps e inteligência artificial.'
-export const SITE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL || 'https://encodora.pt'
+export const SITE_URL = process.env.APP_BASE_URL || 'https://encodora.pt'
 export const CONTACT_EMAIL = 'contacto@encodora.pt'
 export const SITE_IMAGE = `${SITE_URL}/og-image.png`
 

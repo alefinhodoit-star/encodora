@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { createSession } from '@/lib/auth-store'
 
 export async function POST(request: Request) {
   try {
@@ -15,9 +16,11 @@ export async function POST(request: Request) {
 
     // In a production app, validate credentials against a database
     // For now, we accept any non-empty credentials and issue a secure token
-    const token = `auth-${Date.now()}-${Math.random().toString(36).slice(2)}`
+    const userId = '1'
+    const name = email.split('@')[0]
+    const token = createSession(userId, email, name)
 
-    const response = NextResponse.json({ success: true, user: { email, name: email.split('@')[0] } })
+    const response = NextResponse.json({ success: true, user: { email, name } })
 
     // Set HttpOnly, Secure, SameSite=Strict cookie
     response.cookies.set('auth_token', token, {
