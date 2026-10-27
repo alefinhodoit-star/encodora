@@ -7,7 +7,7 @@ import Portfolio from '@/components/Portfolio'
 import Testimonials from '@/components/Testimonials'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
-import Seo from '@/components/Seo'
+import { Seo } from '@/components/Seo'
 import { useLocale } from '@/lib/LocaleContext'
 
 export default function Home() {

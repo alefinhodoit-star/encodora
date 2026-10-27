@@ -20,7 +20,7 @@ export function Seo({
   description?: string
   path?: string
   jsonLd?: Record<string, unknown>
-}): JSX.Element {
+}): JSX.Element | null {
   const metadata: Metadata = {
     title: title ? `${title} · ${SITE_NAME}` : SITE_NAME,
     description: description || SITE_DESCRIPTION,
@@ -50,10 +50,10 @@ export function Seo({
   }
 
   if (jsonLd) {
-    metadata.other = {
-      'application/ld+json': jsonLd,
+      metadata.other = {
+        'application/ld+json': jsonLd as Record<string, string | number | (string | number)[]>,
+      }
     }
-  }
 
   return null
 }

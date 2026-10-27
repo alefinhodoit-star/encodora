@@ -1,6 +1,6 @@
 "use client"
 
-import { ProtectedRoute } from '@/components/ProtectedRoute'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import { useAuth } from '@/lib/AuthContext'
 
 export default function AdminPage() {

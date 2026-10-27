@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Mail, Lock } from 'lucide-react'
-import { GoogleIcon } from '@/components/GoogleIcon'
+import GoogleIcon from '@/components/GoogleIcon'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -98,8 +98,8 @@ export default function LoginPage() {
           onClick={handleGoogleLogin}
           variant="outline"
           className="w-full"
-          startIcon={<GoogleIcon className="h-4 w-4" />}
         >
+          <GoogleIcon className="h-4 w-4 mr-2" />
           Continuar com Google
         </Button>
 
