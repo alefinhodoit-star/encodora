@@ -1,0 +1,54 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "T\u00edtulo"
+    },
+    "category": {
+      "type": "string",
+      "title": "Categoria",
+      "enum": [
+        "Engenharia",
+        "Tend\u00eancias",
+        "Arquitetura",
+        "IA & ML",
+        "DevOps",
+        "Carreira"
+      ]
+    },
+    "excerpt": {
+      "type": "string",
+      "title": "Resumo"
+    },
+    "content": {
+      "type": "string",
+      "title": "Conte\u00fado (Markdown)"
+    },
+    "author": {
+      "type": "string",
+      "title": "Autor"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags (temas)"
+    },
+    "read_time": {
+      "type": "string",
+      "title": "Tempo de leitura"
+    },
+    "views": {
+      "type": "integer",
+      "title": "Leituras",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ]
+}

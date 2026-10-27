@@ -1,0 +1,57 @@
+{
+  "name": "PortfolioProject",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "T\u00edtulo do projeto"
+    },
+    "client": {
+      "type": "string",
+      "title": "Cliente"
+    },
+    "category": {
+      "type": "string",
+      "title": "Categoria"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Imagem de capa"
+    },
+    "challenge": {
+      "type": "string",
+      "title": "Desafio t\u00e9cnico"
+    },
+    "solution": {
+      "type": "string",
+      "title": "Solu\u00e7\u00e3o entregue"
+    },
+    "result": {
+      "type": "string",
+      "title": "Resultado final"
+    },
+    "metric": {
+      "type": "string",
+      "title": "M\u00e9trica de destaque"
+    },
+    "metric_label": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o da m\u00e9trica"
+    },
+    "stack": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Tecnologias utilizadas"
+    },
+    "views": {
+      "type": "integer",
+      "title": "Visitas",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
