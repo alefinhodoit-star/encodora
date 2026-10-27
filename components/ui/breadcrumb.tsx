@@ -4,7 +4,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { ChevronRight } from 'lucide-react'
 
-const Breadcrumb = ({ className, ...props }: React.HTMLAttributes<HTMLNavElement>) => (
+const Breadcrumb = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <nav
     className={cn('flex items-center space-x-2 text-sm', className)}
     aria-label="breadcrumb"

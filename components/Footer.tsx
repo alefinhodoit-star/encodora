@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useLocale } from '@/lib/LocaleContext'
-import { GitHub, Linkedin, X as XIcon, Mail } from 'lucide-react'
+import { Github, Linkedin, X as XIcon, Mail } from 'lucide-react'
 
 export default function Footer() {
   const { t } = useLocale()
@@ -27,7 +27,7 @@ export default function Footer() {
               className="text-gray-400 hover:text-white transition-colors"
               aria-label="GitHub"
             >
-              <GitHub className="h-5 w-5" />
+              <Github className="h-5 w-5" />
             </a>
             <a
               href="https://linkedin.com"

@@ -22,7 +22,7 @@ const FormField = <TFieldValues extends FieldValues = FieldValues, TName extends
       {...props}
       render={({ field }) => (
         <FormFieldContext.Provider value={{ name: field.name }}>
-          {props.children({ field })}
+          {props.children}
         </FormFieldContext.Provider>
       )}
     />

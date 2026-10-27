@@ -7,8 +7,6 @@ import { cn } from '@/lib/utils'
 
 const Accordion = AccordionPrimitive.Root
 const AccordionItem = AccordionPrimitive.Item
-const AccordionTrigger = AccordionPrimitive.Trigger
-const AccordionContent = AccordionPrimitive.Content
 
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
