@@ -51,8 +51,8 @@ export function Seo({
 
   if (jsonLd) {
       metadata.other = {
-        'application/ld+json': jsonLd as Record<string, string | number | (string | number)[]>,
-      }
+            'application/ld+json': JSON.stringify(jsonLd),
+          }
     }
 
   return null
