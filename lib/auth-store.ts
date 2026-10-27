@@ -1,3 +1,11 @@
+// CSRF token management for state-changing operations
+interface CsrfToken {
+  token: string
+  expires: number
+}
+
+const csrfTokens: Record<string, CsrfToken> = {}
+
 interface AuthSession {
   userId: string
   email: string
@@ -57,13 +65,32 @@ export function cleanupExpiredSessions(): void {
   })
 }
 
-// CSRF token management for state-changing operations
-interface CsrfToken {
-  token: string
-  expires: number
+export function cleanupExpiredCsrfTokens(): void {
+  const now = Date.now()
+  Object.keys(csrfTokens).forEach((key) => {
+    if (csrfTokens[key].expires < now) {
+      delete csrfTokens[key]
+    }
+  })
 }
 
-const csrfTokens: Record<string, CsrfToken> = {}
+// Start periodic cleanup every hour
+let cleanupInterval: any = null
+
+export function startSessionCleanup(): void {
+  if (cleanupInterval) return
+  cleanupInterval = setInterval(() => {
+    cleanupExpiredSessions()
+    cleanupExpiredCsrfTokens()
+  }, 60 * 60 * 1000) // 1 hour
+}
+
+export function stopSessionCleanup(): void {
+  if (cleanupInterval) {
+    clearInterval(cleanupInterval)
+    cleanupInterval = null
+  }
+}
 
 export function generateCsrfToken(): string {
   const token = crypto.randomUUID()
@@ -84,13 +111,4 @@ export function validateCsrfToken(token: string): boolean {
   }
   
   return true
-}
-
-export function cleanupExpiredCsrfTokens(): void {
-  const now = Date.now()
-  Object.keys(csrfTokens).forEach((key) => {
-    if (csrfTokens[key].expires < now) {
-      delete csrfTokens[key]
-    }
-  })
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -13,17 +13,18 @@ export default function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [token, setToken] = useState('')
   const router = useRouter()
-  const searchParams = useSearchParams()
 
-  // Get token from URL query parameter
-  const token = searchParams.get('token') || ''
-
+  // Get token from URL query parameter on client side only
   useEffect(() => {
-    if (!token) {
+    const urlParams = new URLSearchParams(window.location.search)
+    const tokenParam = urlParams.get('token') || ''
+    setToken(tokenParam)
+    if (!tokenParam) {
       setError('Missing reset token. Please request a new password reset.')
     }
-  }, [token])
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

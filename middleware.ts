@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { generateCsrfToken } from '@/lib/auth-store'
+import { generateCsrfToken, startSessionCleanup } from '@/lib/auth-store'
+import { startTokenCleanup } from '@/lib/password-reset-store'
 
 // Rate limiting store
 const rateLimitStore: Record<string, { count: number; resetTime: number }> = {}
@@ -31,6 +32,10 @@ function checkRateLimit(ip: string, maxRequests: number = 100): boolean {
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
   const ip = request.headers.get('x-forwarded-for') || 'unknown'
+  
+  // Start cleanup if not already started
+  startSessionCleanup()
+  startTokenCleanup()
   
   // Rate limiting for all requests
   if (!checkRateLimit(ip)) {
