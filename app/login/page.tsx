@@ -100,6 +100,7 @@ export default function LoginPage() {
           className="w-full"
         >
           <GoogleIcon className="h-4 w-4 mr-2" />
+                    Continuar com Google
           Continuar com Google
         </Button>
 

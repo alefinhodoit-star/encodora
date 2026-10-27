@@ -50,10 +50,10 @@ export function Seo({
   }
 
   if (jsonLd) {
-      metadata.other = {
-        'application/ld+json': jsonLd as Record<string, string | number | (string | number)[]>,
-      }
+    metadata.other = {
+      'application/ld+json': jsonLd as unknown as Record<string, string | number | (string | number)[]>,
     }
+  }
 
   return null
 }
