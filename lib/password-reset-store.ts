@@ -53,3 +53,20 @@ export function cleanupExpiredTokens(): void {
     }
   })
 }
+
+// Start periodic cleanup every hour
+let cleanupInterval: NodeJS.Timeout | null = null
+
+export function startTokenCleanup(): void {
+  if (cleanupInterval) return
+  cleanupInterval = setInterval(() => {
+    cleanupExpiredTokens()
+  }, 60 * 60 * 1000) // 1 hour
+}
+
+export function stopTokenCleanup(): void {
+  if (cleanupInterval) {
+    clearInterval(cleanupInterval)
+    cleanupInterval = null
+  }
+}
