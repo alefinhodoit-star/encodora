@@ -12,7 +12,7 @@ export const LOCALES = [
   { code: 'fr-FR', name: 'Français', flag: '🇫🇷', currency: 'EUR', symbol: '€' },
 ]
 
-const STORAGE_KEY = 'encodora.locale'
+export const STORAGE_KEY = 'encodora.locale'
 
 const LocaleContext = createContext<{
   locale: string
@@ -59,51 +59,35 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
-    if (getSavedLocale()) return
-    const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), 4000)
-    fetch('https://ipwho.is/', { signal: controller.signal })
-      .then((r) => r.json())
-      .then((d: { country_code?: string }) => {
-        if (d && d.country_code) setLocaleState(localeFromCountry(d.country_code))
-      })
-      .catch(() => {})
-    return () => {
-      clearTimeout(timer)
-      controller.abort()
-    }
-  }, [])
-
-  useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = locale
     }
   }, [locale])
 
   const lookup = useCallback(
-      (key: string) => {
-        const walk = (dict: Record<string, unknown>) =>
-          key.split('.').reduce<unknown>((acc, part) => (acc == null ? undefined : (acc as Record<string, unknown>)[part]), dict)
-        const val = walk(DICTS[locale])
-        if (val !== undefined) return val
-        return walk(DICTS[DEFAULT_LOCALE])
-      },
-      [locale]
-    )
-  
-    const t = useCallback(
-      (key: string, vars?: Record<string, string | number>) => {
-        const val = lookup(key)
-        if (typeof val !== 'string') return key
-        if (vars) {
-          for (const k of Object.keys(vars)) {
-            val.split(`{${k}}`).join(String(vars[k]))
-          }
+    (key: string) => {
+      const walk = (dict: Record<string, unknown>) =>
+        key.split('.').reduce<unknown>((acc, part) => (acc == null ? undefined : (acc as Record<string, unknown>)[part]), dict)
+      const val = walk(DICTS[locale])
+      if (val !== undefined) return val
+      return walk(DICTS[DEFAULT_LOCALE])
+    },
+    [locale]
+  )
+
+  const t = useCallback(
+    (key: string, vars?: Record<string, string | number>) => {
+      const val = lookup(key)
+      if (typeof val !== 'string') return key
+      if (vars) {
+        for (const k of Object.keys(vars)) {
+          val.split(`{${k}}`).join(String(vars[k]))
         }
-        return val
-      },
-      [lookup]
-    )
+      }
+      return val
+    },
+    [lookup]
+  )
 
   const tr = useCallback((key: string) => lookup(key), [lookup])
 
@@ -157,7 +141,7 @@ const DICTS: Record<string, Record<string, unknown>> = {
     'nav.about': 'Sobre',
     'nav.contact': 'Contato',
     'nav.login': 'Entrar',
-    'nav.register': 'Cavar',
+    'nav.register': 'Cadar',
     'footer.description': 'Encodora é uma agência de engenharia de software especializada em backend, frontend, mobile, cloud/DevOps e inteligência artificial.',
     'footer.contact': 'Contacto: contacto@encodora.pt',
   },

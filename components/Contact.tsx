@@ -11,13 +11,24 @@ import { useLocale } from '@/lib/LocaleContext'
 export default function Contact() {
   const { t } = useLocale()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [honeypot, setHoneypot] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    alert('Mensagem enviada com sucesso!')
+    try {
+      // Honeypot field - if filled, it's likely a bot
+      if (honeypot) {
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+        return
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+      alert('Mensagem enviada com sucesso!')
+    } catch (error) {
+      console.error('Contact form error', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -73,6 +84,18 @@ export default function Contact() {
             <div className="space-y-2">
               <Label htmlFor="message">Mensagem</Label>
               <Textarea id="message" rows={4} placeholder="Conte sobre seu projeto..." required />
+            </div>
+            {/* Honeypot field - hidden from users, catches bots */}
+            <div style={{ display: 'none' }}>
+              <Label htmlFor="website">Website</Label>
+              <Input
+                id="website"
+                type="text"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+              />
             </div>
             <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}

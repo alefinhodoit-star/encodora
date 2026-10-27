@@ -17,10 +17,12 @@ interface AuthContextType {
   authError: { type: string; message: string } | null
   appPublicSettings: Record<string, unknown> | null
   authChecked: boolean
-  logout: (shouldRedirect?: boolean) => void
+  logout: (shouldRedirect?: boolean) => Promise<void>
   navigateToLogin: () => void
   checkUserAuth: () => Promise<void>
   checkAppState: () => Promise<void>
+  login: (email: string, password: string) => Promise<boolean>
+  register: (name: string, email: string, password: string, confirmPassword: string) => Promise<boolean>
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -52,13 +54,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkUserAuth = async () => {
     setIsLoadingAuth(true)
     try {
-      const token = localStorage.getItem('auth_token')
-      if (token) {
-        const storedUser = localStorage.getItem('auth_user')
-        if (storedUser) {
-          setUser(JSON.parse(storedUser))
+      const response = await fetch('/api/auth/me')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.authenticated && data.user) {
+          setUser(data.user)
           setIsAuthenticated(true)
+        } else {
+          setIsAuthenticated(false)
         }
+      } else {
+        setIsAuthenticated(false)
       }
       setIsLoadingAuth(false)
       setAuthChecked(true)
@@ -69,11 +75,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const logout = (shouldRedirect = true) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
+    setIsLoadingAuth(true)
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setUser(data.user)
+        setIsAuthenticated(true)
+        return true
+      }
+      return false
+    } catch (error) {
+      return false
+    } finally {
+      setIsLoadingAuth(false)
+    }
+  }
+
+  const register = async (name: string, email: string, password: string, confirmPassword: string): Promise<boolean> => {
+    setIsLoadingAuth(true)
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, confirmPassword }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setUser(data.user)
+        setIsAuthenticated(true)
+        return true
+      }
+      return false
+    } catch (error) {
+      return false
+    } finally {
+      setIsLoadingAuth(false)
+    }
+  }
+
+  const logout = async (shouldRedirect = true) => {
+    try {
+      await fetch('/api/auth/logout')
+    } catch (error) {
+      console.error('Logout failed', error)
+    }
     setUser(null)
     setIsAuthenticated(false)
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('auth_user')
     if (shouldRedirect) {
       window.location.href = '/login'
     }
@@ -97,6 +152,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         navigateToLogin,
         checkUserAuth,
         checkAppState,
+        login,
+        register,
       }}
     >
       {children}

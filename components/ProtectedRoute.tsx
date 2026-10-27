@@ -17,10 +17,8 @@ export default function ProtectedRoute({
   const { isAuthenticated, isLoadingAuth, authChecked } = useAuth()
 
   useEffect(() => {
-    if (!authChecked && !isLoadingAuth) {
-      // Auth check already handled by provider
-    }
-  }, [authChecked, isLoadingAuth])
+    // Auth check is handled by the provider fetching from API
+  }, [])
 
   if (isLoadingAuth || !authChecked) {
     return <>{fallback}</>

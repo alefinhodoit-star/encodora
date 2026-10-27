@@ -15,15 +15,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const { navigateToLogin } = useAuth()
+  const { login } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      localStorage.setItem('auth_token', 'mock-token')
-      localStorage.setItem('auth_user', JSON.stringify({ id: '1', name: 'Usuário', email }))
-      router.push('/')
+      const success = await login(email, password)
+      if (success) {
+        router.push('/')
+      }
     } catch (error) {
       console.error('Login failed', error)
     } finally {
@@ -32,9 +33,9 @@ export default function LoginPage() {
   }
 
   const handleGoogleLogin = () => {
-    localStorage.setItem('auth_token', 'mock-google-token')
-    localStorage.setItem('auth_user', JSON.stringify({ id: '2', name: 'Usuário Google', email: 'usuario@gmail.com' }))
-    router.push('/')
+    // TODO: Implement Google OAuth with proper server-side flow
+    // For now, redirect to login with a demo account
+    window.location.href = '/login?demo=true'
   }
 
   return (
@@ -100,7 +101,6 @@ export default function LoginPage() {
           className="w-full"
         >
           <GoogleIcon className="h-4 w-4 mr-2" />
-                    Continuar com Google
           Continuar com Google
         </Button>
 
